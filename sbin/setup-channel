@@ -1,0 +1,21 @@
+#!/bin/bash
+# resolve links - $0 may be a softlink
+if [ -z "$APP_HOME" ];then
+  PRG="$0"
+  while [ -h "$PRG" ] ; do
+    ls=$(ls -ld "$PRG")
+    link=$(expr "$ls" : '.*-> \(.*\)$')
+    if expr "$link" : '/.*' > /dev/null; then
+      PRG="$link"
+    else
+      PRG=$(dirname "$PRG")/"$link"
+    fi
+  done
+  cd "$(dirname "$PRG")/.." || exit 1
+  export APP_HOME="$(pwd)"
+  cd - &>/dev/null || exit 1
+fi
+
+. $APP_HOME/sbin/env.sh
+
+configure-channel
